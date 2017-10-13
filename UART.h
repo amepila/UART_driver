@@ -14,6 +14,9 @@
 #include "MK64F12.h"
 #include "DataTypeDefinitions.h"
 
+#define UART_SBR_MASK_HIGH	(0x1F00U)
+#define UART_SBR_MASK_LOW	(0xFFU)
+
 /**
  * \brief A mail box type definition for serial port
  */
