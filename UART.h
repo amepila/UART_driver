@@ -23,6 +23,7 @@ typedef struct{
 } UART_MailBoxType;
 
 
+
 /**
  * \brief This enum define the UART port to be used.
  */
