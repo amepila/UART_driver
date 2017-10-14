@@ -16,6 +16,9 @@
 
 #define UART_SBR_MASK_HIGH	(0x1F00U)
 #define UART_SBR_MASK_LOW	(0xFFU)
+#define UART_CLEAR_DATA		(0xFFU)
+#define UART_CLEAR_BDH		(0x1FU)
+#define UART_CLEAR_BDL		(0xFFU)
 
 /**
  * \brief A mail box type definition for serial port
