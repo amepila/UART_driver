@@ -6,17 +6,26 @@
  */
 #include "UART.h"
 #include "GPIO.h"
+#define S 65000
 
 /*Global variable that saves the info*/
 UART_MailBoxType UART0_MailBox;
 
 
+void delay(uint32 delay){
+	volatile uint32 counter;
+
+	for(counter=delay;counter>0;counter--){
+	}
+}
+
 
 void UART0_Status_IRQHandler(void){
+
 	/*First is verified if the serial port finished to transmit*/
-	if((UART0->S1 & UART_S1_RDRF_MASK)){
+	if(!(UART0->S1 & UART_S1_RDRF_MASK)){
 		/*The info is saved in Data Register*/
-		UART0->D |= UART0_MailBox.mailBox;
+		UART0_MailBox.mailBox |= UART0->D;
 		/*There are new data*/
 		UART0_MailBox.flag = 1;
 	}
@@ -89,9 +98,9 @@ void UART_putChar (UART_ChannelType uartChannel, uint8 character){
 	if((UART0->S1 & UART_S1_TC_MASK)){
 		/*Send character to Data Register*/
 		UART0->D |= character;
-		/*Clear the data*/
-		UART0->D &= ~(UART_CLEAR_DATA);
+		delay(S);
 	}
+	UART0_Status_IRQHandler();
 }
 
 void UART_putString(UART_ChannelType uartChannel, sint8* string){
@@ -105,9 +114,9 @@ void UART_putString(UART_ChannelType uartChannel, sint8* string){
 			UART0->D |= string[counter];
 			/*Move to next position in the array*/
 			counter++;
-			/*Clear the data*/
-			UART0->D &= ~(UART_CLEAR_DATA);
+			delay(S);
 		}
 	}
+	UART0_Status_IRQHandler();
 }
 
